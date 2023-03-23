@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
+require('dotenv').config()
+const axios = require('axios');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('Commodities');
+  axios.get(`${process.env.FOREX_BASE_URL}?pairs=USDCAD,USDJPY,EURUSD`)
+    .then(response => {
+      res.json(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error: 'Error fetching data' });
+    });
+  //res.send('Commodities');
 });
 
 module.exports = router;
